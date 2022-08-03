@@ -1,6 +1,7 @@
 import Rey from "../clases/rey.js";
 import PigGroup from "../clases/pigGroup.js";
 import Camara from "../clases/camara.js";
+import InfoBoxGroup from "../clases/infoBoxGroup.js";
 
 export default class Scene2 extends Phaser.Scene {
     constructor(){
@@ -21,6 +22,13 @@ export default class Scene2 extends Phaser.Scene {
         this.load.spritesheet('Pig','assets/sprites/Pig/Idle.png', {frameWidth: 34, frameHeight: 28});
         this.load.spritesheet('PigM','assets/sprites/Pig/Dead.png', {frameWidth: 34, frameHeight: 28});
         this.load.spritesheet('PigG','assets/sprites/Pig/Hit.png', {frameWidth: 34, frameHeight: 28});
+        //infoBox
+        this.load.image("infoBoxIdle", "assets/sprites/Box/Idle.png"); 
+        this.load.image("infoBox1", "assets/sprites/Box/boxPiece1.png"); 
+        this.load.image("infoBox2", "assets/sprites/Box/boxPiece2.png"); 
+        this.load.image("infoBox3", "assets/sprites/Box/boxPiece3.png"); 
+        this.load.image("infoBox4", "assets/sprites/Box/boxPiece4.png"); 
+        this.load.image("infoBoxHit", "assets/sprites/Box/Hit.png"); 
     }
 
     create(){
@@ -38,6 +46,10 @@ export default class Scene2 extends Phaser.Scene {
         this.pigGroup.crearPig(200,200);
         this.pigGroup.crearPig(300,200);
         this.pigGroup.crearPig(400,200);
+
+        //infoBox
+        this.infoBoxGroup = new InfoBoxGroup(this.physics.world,this);
+        this.infoBoxGroup.crearBox(100,200);
  
         //colisiones rey
         layer.setCollisionByProperty({ solido: true});
@@ -47,7 +59,11 @@ export default class Scene2 extends Phaser.Scene {
 
         this.physics.add.overlap(this.rey, this.pigGroup, this.hitKing, null, this);
         this.physics.add.overlap(this.rey.mazoHitbox, this.pigGroup, this.hitPig, null, this);
+        this.physics.add.overlap(this.rey.mazoHitbox, this.infoBoxGroup, this.hitInfoBox, null, this);
         
+        //colision infoBox
+        this.physics.add.collider(this.infoBoxGroup,layer);
+
 
         //camara
         this.camara = new Camara(this,map2,this.rey);
@@ -57,6 +73,14 @@ export default class Scene2 extends Phaser.Scene {
 
     update(){
         this.rey.update();
+    }
+
+    hitInfoBox(mazo,infoBox){
+        infoBox.anims.play('destroyingInfoBox');
+        //esperar un segundo y despues destruye la cajita
+        this.time.addEvent({callback: () => {infoBox.destroy()}, delay: 1000, callbackScope: this, loop: true});
+        this.te = this.add.text(this.rey.x,200, 'Se desplegará información a cerca del tema actual, ya no se que mas poner',{ resolution:2 ,font: "20px Arial", color: 'white', stroke: '#000', strokeThickness: 3});
+        this.te.setWordWrapWidth(200, true);
     }
 
     hitKing(rey,pig){
