@@ -53,7 +53,7 @@ export default class Rey extends Phaser.Physics.Arcade.Sprite {
 
     atributos(){
         this.setGravityY(1000);
-        this.velocidadRey = 100;
+        this.velocidadRey = 300;
         this.alturaSaltoRey = -400;
         this.enemigosEliminados = 0;
         this.setSize(20,26);

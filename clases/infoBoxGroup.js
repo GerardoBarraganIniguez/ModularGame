@@ -19,9 +19,6 @@ export default class InfoBoxGroup extends Phaser.Physics.Arcade.Group {
             frameRate: 8,
             repeat: 3
         });
-
-        // this.add.sprite(400, 300, 'cat1')
-        //     .play('snooze');
     }
     
 
