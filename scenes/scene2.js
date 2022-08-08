@@ -28,9 +28,11 @@ export default class Scene2 extends Phaser.Scene {
         this.load.image("infoBox3", "assets/sprites/Box/boxPiece3.png"); 
         this.load.image("infoBox4", "assets/sprites/Box/boxPiece4.png"); 
         this.load.image("infoBoxHit", "assets/sprites/Box/Hit.png"); 
+
     }
 
     create(){
+        
         //mapa
         const map2 = this.make.tilemap({ key: "map2", tileWidth: 32, tileHeight: 32});
         //solidos
@@ -83,8 +85,10 @@ export default class Scene2 extends Phaser.Scene {
         infoBox.anims.play('destroyingInfoBox');
         //esperar un segundo y despues destruye la cajita
         this.time.addEvent({callback: () => {infoBox.destroy()}, delay: 1000, callbackScope: this, loop: true});
-        this.textoPrueba = this.add.text(x-500, y-300, 'Se desplegará información a cerca del tema actual, este texto solo es una prueba para mostrar como se vería la información traida de la base de datos aquí en el juego ya no se que mas poner lorem ipsum ',{font: "25px", color: 'white', stroke: '#000', strokeThickness: 3});
+        this.textoPrueba = this.add.text(x-500, y-300, 'Se desplegará información a cerca del tema actual, este texto solo es una prueba para mostrar como se vería la información traida de la base de datos aquí en el juego ya no se que mas poner lorem ipsum ',{font: "25px", color: 'white', backgroundColor: 'rgba(239,128,229,0.1)', stroke: 'black', strokeThickness: 3});
+        //límite en pantalla
         this.textoPrueba.setWordWrapWidth(1000, true);
+        
     }
 
     hitKing(rey,pig){

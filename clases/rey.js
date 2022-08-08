@@ -22,17 +22,17 @@ export default class Rey extends Phaser.Physics.Arcade.Sprite {
                 this.anims.play('ReyCorriendo',true);
             }
         }
-        else if (this.derecha.isDown){
+        if (this.derecha.isDown){
             this.body.setVelocityX(this.velocidadRey); 
             this.flipX = false;
             if (this.body.onFloor()){
                 this.anims.play('ReyCorriendo',true);
             }
         }
-        else if (this.salto.isDown && this.body.onFloor()){
+        if (this.salto.isDown && this.body.onFloor()){
             this.body.setVelocityY(this.alturaSaltoRey);
         }
-        else if (Phaser.Input.Keyboard.JustDown(this.ataque)){
+        if (Phaser.Input.Keyboard.JustDown(this.ataque)){
 
             this.mazoHitbox.body.enable = true;
             //Si el rey se voltea la hitbox tambien  
