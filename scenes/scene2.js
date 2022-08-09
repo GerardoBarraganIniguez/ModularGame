@@ -44,9 +44,9 @@ export default class Scene2 extends Phaser.Scene {
 
         //Pigs
         this.pigGroup = new PigGroup(this.physics.world, this);
-        this.pigGroup.crearPig(200,200);
-        this.pigGroup.crearPig(300,200);
-        this.pigGroup.crearPig(400,200);
+        this.pigGroup.crearPig(600,200);
+        this.pigGroup.crearPig(1000,200);
+        this.pigGroup.crearPig(1500,200);
 
         //infoBox
         this.infoBoxGroup = new InfoBoxGroup(this.physics.world,this);
@@ -71,13 +71,36 @@ export default class Scene2 extends Phaser.Scene {
         //camara
         this.cameras.main.setBounds(0, 0, map2.widthInPixels, map2.heightInPixels);
         this.cameras.main.startFollow(this.rey);
-        //this.cameras.main.setBackgroundColor('#ccccff');      
+        //this.cameras.main.setBackgroundColor('#ccccff');     
+        
+        
     }
 
     update(){
         this.rey.update();
+        this.enemyAttack();
+        
     }
 
+    enemyAttack(){
+        for (const pig of this.pigGroup.getChildren()) {
+            if (Phaser.Math.Distance.BetweenPoints(pig, this.rey) < 100) {
+                // if player to left of enemy AND enemy moving to right (or not moving)
+                if (this.rey.x < pig.x && pig.body.velocity.x >= 0) {
+                    // move enemy to left
+                    pig.body.velocity.x = -50;
+                }
+                // if player to right of enemy AND enemy moving to left (or not moving)
+                else if (this.rey.x > pig.x && pig.body.velocity.x <= 0) {
+                    // move enemy to right
+                    pig.body.velocity.x = 50;
+                }
+            }
+            else{
+                pig.body.velocity.x = 0;
+            }
+          } 
+    }
     
     hitInfoBox(mazo,infoBox){
         //puntos centrales de la camara para poder mostrar el texto en pantalla
